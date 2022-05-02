@@ -1,16 +1,11 @@
 import { catalogSkus, rules } from '../helper';
 import { Checkout } from './Checkout';
-import { PricingRule } from './types';
 
 describe('Checkout', () => {
   describe('Initialize', () => {
     it('should create checkout with pricing rules', () => {
-      const rules: PricingRule[] = [
-        { name: '3for2AppleTV' },
-        { name: 'bulkDiscountIpad' },
-      ];
-      const sut = new Checkout(rules);
-      expect(sut.rules).toEqual(rules.map((r) => r.name).join(','));
+      const sut = new Checkout([rules.bulkDiscountIpad]);
+      expect(sut.rules).toEqual(rules.bulkDiscountIpad.name);
     });
   });
   describe('Scan', () => {
