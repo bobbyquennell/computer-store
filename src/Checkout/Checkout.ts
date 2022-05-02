@@ -1,9 +1,9 @@
-import { Catalog } from '../helper';
+import { catalog } from '../helper';
 import { PricingRule, Product } from './types';
 
 export class Checkout {
   #rules: PricingRule[] = [];
-  #catalog: Product[] = Catalog;
+  #catalog: Product[] = catalog;
   #cart: Product[] = [];
   constructor(rules?: PricingRule[]) {
     if (rules) this.#rules = rules;
