@@ -1,4 +1,5 @@
-import { PricingRule, Product, RuleName } from './Checkout/types';
+import { Checkout, PricingRule, Product, RuleName } from './Checkout';
+import { Command, CmdFunctionType, ScanFunctionType } from './types';
 
 export const catalogSkus = {
   Ipad: 'ipd',
@@ -28,4 +29,30 @@ export const rules: Record<RuleName, PricingRule> = {
       discountPrice: 499.99,
     },
   },
+};
+
+const execCmd: Record<Command, CmdFunctionType> = {
+  TOTAL: (checkout: Checkout) => checkout.total(),
+
+  SCAN: (checkout: Checkout) => (sku: string) => checkout.scan(sku),
+};
+
+export const isCommandType = (input: string): input is Command => {
+  return ['SCAN', 'TOTAL'].includes(input);
+};
+export const executeCmds = (cmds: string[], checkout: Checkout) => {
+  for (const cmd of cmds) {
+    const cmdTypeAndArgs = cmd.split(',');
+    const cmdType = cmdTypeAndArgs[0] as Command;
+    if (!isCommandType(cmdType)) {
+      console.log('invalid cmd:', cmdType);
+      break;
+    }
+    if (cmdType !== 'TOTAL') {
+      const sku = cmdTypeAndArgs[1]?.trim();
+      (execCmd[cmdType](checkout) as ScanFunctionType)(sku);
+    } else {
+      execCmd[cmdType](checkout);
+    }
+  }
 };

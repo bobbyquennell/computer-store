@@ -1,0 +1,8 @@
+SCAN, atv
+SCAN, atv
+SCAN, ipd
+SCAN, ipd
+SCAN, atv
+SCAN, ipd
+SCAN, ipd
+TOTAL

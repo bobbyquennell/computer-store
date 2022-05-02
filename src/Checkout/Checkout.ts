@@ -66,25 +66,33 @@ export class Checkout {
       this.#applyDiscount3for2(discount, cart),
   };
   scan = (sku: string) => {
+    console.log('SCAN ', sku);
     const product = this.#catalog.find((p) => p.sku === sku);
     if (!product) {
-      console.log('cannot find product with sku:', sku);
+      console.warn('cannot find product with sku:', sku);
       return;
     }
     this.#cart.push({ ...product });
+    console.log('Cart:', this.cart);
   };
 
   total = () => {
+    console.log('TOTAL');
     for (const rule of this.#rules) {
       if (this.#isQualifiedForDiscount(rule.threshold, this.#cart)) {
+        console.log('\x1b[32m%s\x1b[0m', 'WOW, you found a deal !', rule.name);
         this.#cart = this.#applyDiscount[rule.discount.type](
           rule.discount,
           this.#cart,
         );
       }
     }
-    return this.#cart
+
+    const total = this.#cart
       .reduce((total, product) => (total += product.price), 0)
       .toFixed(2);
+
+    console.log('total price: $', total);
+    return total;
   };
 }
