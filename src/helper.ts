@@ -16,16 +16,16 @@ export const catalog: Product[] = [
 export const rules: Record<RuleName, PricingRule> = {
   '3for2AppleTV': {
     name: '3for2AppleTV',
-    threshold: { sku: catalogSkus.AppleTV, count: 3 },
+    threshold: { sku: catalogSkus.AppleTV, exactCount: 3 },
     discount: { type: '3for2', sku: catalogSkus.AppleTV, qtyOfFreeItems: 1 },
   },
   bulkDiscountIpad: {
     name: 'bulkDiscountIpad',
-    threshold: { sku: catalogSkus.Ipad, count: 4 },
+    threshold: { sku: catalogSkus.Ipad, minCount: 4 },
     discount: {
       type: 'bulkDiscount',
       sku: catalogSkus.Ipad,
-      qtyOfFreeItems: 1,
+      discountPrice: 499.99,
     },
   },
 };

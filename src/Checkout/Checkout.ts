@@ -24,7 +24,13 @@ export class Checkout {
 
   #isQualifiedForDiscount = (threshold: DiscountThreshold, cart: Product[]) => {
     const qty = cart.filter((item) => item.sku === threshold.sku).length;
-    return qty === threshold.count;
+    if (threshold.exactCount) {
+      return qty === threshold.exactCount;
+    }
+    if (threshold.minCount) {
+      return qty >= threshold.minCount;
+    }
+    return false;
   };
 
   #applyDiscount3for2 = (discount: Discount, cart: Product[]): Product[] => {
@@ -37,14 +43,25 @@ export class Checkout {
     return [...unDiscountedItems, ...targetItems];
   };
 
+  #applyBulkDiscount = (discount: Discount, cart: Product[]) => {
+    const unDiscountedItems = cart.filter((item) => item.sku !== discount.sku);
+    const targetItems = cart.filter((item) => item.sku === discount.sku);
+    const discountedItems = targetItems.map(
+      (item) =>
+        ({
+          ...item,
+          price: discount.discountPrice ?? item.price,
+        } as Product),
+    );
+    return [...unDiscountedItems, ...discountedItems];
+  };
+
   #applyDiscount: Record<
     DiscountType,
     (discount: Discount, cart: Product[]) => Product[]
   > = {
-    bulkDiscount: (discount: Discount, cart: Product[]) => {
-      console.error('not implemented yet', discount.type, cart.length);
-      return [];
-    },
+    bulkDiscount: (discount: Discount, cart: Product[]) =>
+      this.#applyBulkDiscount(discount, cart),
     '3for2': (discount: Discount, cart: Product[]) =>
       this.#applyDiscount3for2(discount, cart),
   };

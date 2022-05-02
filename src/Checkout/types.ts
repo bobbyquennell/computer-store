@@ -7,7 +7,8 @@ export type RuleName = typeof RuleNames[keyof typeof RuleNames];
 
 export interface DiscountThreshold {
   sku: string;
-  count: number;
+  minCount?: number;
+  exactCount?: number;
 }
 
 export const DiscountTypes = {
@@ -19,7 +20,8 @@ export type DiscountType = typeof DiscountTypes[keyof typeof DiscountTypes];
 export interface Discount {
   type: DiscountType;
   sku: string;
-  qtyOfFreeItems: number;
+  qtyOfFreeItems?: number;
+  discountPrice?: number;
 }
 export interface PricingRule {
   name: RuleName;
