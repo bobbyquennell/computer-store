@@ -40,4 +40,15 @@ describe('Checkout', () => {
       expect(sut.total()).toEqual((249.0).toFixed(2));
     });
   });
+
+  describe('Bulk discount iPad', () => {
+    it('Given scanned items: atv, ipd, ipd, atv, ipd, ipd, ipd, should return total price: $2718.95', () => {
+      const skus = ['atv', 'ipd', 'ipd', 'atv', 'ipd', 'ipd', 'ipd'];
+      const sut = new Checkout([rules['bulkDiscountIpad']]);
+      skus.forEach((sku) => {
+        sut.scan(sku);
+      });
+      expect(sut.total()).toEqual((2718.95).toFixed(2));
+    });
+  });
 });
