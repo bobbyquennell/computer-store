@@ -1,10 +1,10 @@
-# Simple Typescript App
+# Simple Computer Store
 
-a simple app to kickstart your ts project (backend)
+a simple computer store
 
 ## Prerequisites
 
-- [TypeScript](https://www.typescriptlang.org/download) 4.3.2+
+- [TypeScript](https://www.typescriptlang.org/download) 4.6.4+
 - [Node.js](https://nodejs.org/en/) version 14 (or later)
   
 ## How to Run
@@ -14,10 +14,10 @@ a simple app to kickstart your ts project (backend)
 ---
 
 ```bash
-git clone git@github.com:bobbyquennell/simple-ts-app.git && cd simple-ts-app
+git clone git@github.com:bobbyquennell/computer-store.git && cd computer-store
 ```
 
-### 2. bootstrap the project
+### 2. Bootstrap the project
 
 ---
 
