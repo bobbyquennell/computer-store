@@ -39,6 +39,17 @@ describe('Checkout', () => {
       });
       expect(sut.total()).toEqual((249.0).toFixed(2));
     });
+
+    it(`buy 4 apply tvs, should return original price: $${(109.5 * 4).toFixed(
+      2,
+    )}`, () => {
+      const skus = ['atv', 'atv', 'atv', 'atv'];
+      const sut = new Checkout([rules['3for2AppleTV']]);
+      skus.forEach((sku) => {
+        sut.scan(sku);
+      });
+      expect(sut.total()).toEqual((109.5 * 4).toFixed(2));
+    });
   });
 
   describe('Bulk discount iPad', () => {
@@ -50,5 +61,40 @@ describe('Checkout', () => {
       });
       expect(sut.total()).toEqual((2718.95).toFixed(2));
     });
+    it.each([
+      [['ipd'], (549.99).toFixed(2)],
+      [['ipd', 'ipd', 'ipd'], (549.99 * 3).toFixed(2)],
+      [['ipd', 'ipd', 'ipd', 'ipd'], (499.99 * 4).toFixed(2)],
+    ])(
+      'Given scanned items: %s, should return total price: %f',
+      (skus, expectedTotal) => {
+        const sut = new Checkout([rules['bulkDiscountIpad']]);
+        skus.forEach((sku) => {
+          sut.scan(sku);
+        });
+        expect(sut.total()).toEqual(expectedTotal);
+      },
+    );
+  });
+
+  describe('mixed deals', () => {
+    it.each([
+      [
+        ['ipd', 'ipd', 'ipd', 'ipd', 'atv', 'atv', 'atv', 'vga'],
+        (249.0 + 499.99 * 4).toFixed(2),
+      ],
+    ])(
+      'Given scanned items: %s, should return total price: %f',
+      (skus, expectedTotal) => {
+        const sut = new Checkout([
+          rules['3for2AppleTV'],
+          rules['bulkDiscountIpad'],
+        ]);
+        skus.forEach((sku) => {
+          sut.scan(sku);
+        });
+        expect(sut.total()).toEqual(expectedTotal);
+      },
+    );
   });
 });
