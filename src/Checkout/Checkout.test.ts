@@ -1,3 +1,4 @@
+import { CatalogSkus } from '../helper';
 import { Checkout } from './Checkout';
 import { PricingRule } from './types';
 
@@ -15,14 +16,22 @@ describe('Checkout', () => {
   describe('Scan', () => {
     it('given valid item from product catalog, should add item to cart', () => {
       const sut = new Checkout();
-      sut.scan('atv');
+      sut.scan(CatalogSkus.AppleTV);
       expect(sut.cart).toEqual('Apple TV');
     });
     it('given invalid item, should not add item to cart', () => {
       const sut = new Checkout();
-      sut.scan('atv');
+      sut.scan(CatalogSkus.AppleTV);
       sut.scan('apple');
       expect(sut.cart).toEqual('Apple TV');
+    });
+  });
+
+  describe('Total', () => {
+    it('should return original total, if no active deals', () => {
+      const sut = new Checkout();
+      sut.scan(CatalogSkus.AppleTV);
+      expect(sut.total()).toEqual((109.5).toFixed(2));
     });
   });
 });
